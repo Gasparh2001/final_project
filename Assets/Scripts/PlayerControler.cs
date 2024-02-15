@@ -84,7 +84,7 @@ public class PlayerControler : MonoBehaviour
         //marco las pautas para girar al player
     }
 
-   /*
+   
     private bool IsOnTheGround()
     {
         float extraHeight = 0.05f;
@@ -96,5 +96,6 @@ public class PlayerControler : MonoBehaviour
 
         return isOnTheGround;
     }
-   */
+   
+
 }

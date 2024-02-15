@@ -33,7 +33,18 @@ public class pruevas : MonoBehaviour
 
             rigidPlayer.AddForce(Vector2.up * force);
         }
-  
+
+    StartCoroutine(Motion());
+        IEnumerator Motion()
+        {
+            while (true)
+            {
+                rigidEnemy.velocity = new Vector2(horizontalWalk * speed, rigidEnemy.velocity.y);
+                yield return new WaitForSeconds(waitingTime);
+                speed *= -1;
+                yield return null;
+            }
+        }
     }
     */
 }
