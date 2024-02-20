@@ -77,10 +77,11 @@ public class PlayerControler : MonoBehaviour
 
     void FlipPlayer() 
     {
-        positiveDirection =! positiveDirection;
-        Vector2 playerScale = gameObject.transform.localScale;
-        playerScale.x *= -1;
-        transform.localScale = playerScale;
+        positiveDirection = !positiveDirection;
+        //Vector2 playerScale = gameObject.transform.localScale;
+        //playerScale.x *= -1;
+        //transform.localScale = playerScale;
+        transform.rotation *= Quaternion.Euler(0, 180, 0);
         //marco las pautas para girar al player
     }
 
