@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class IAEnemy : MonoBehaviour
 {
+    public Transform raycastOrigin;
+
     public int speed = 3;
     public int waitingTime = 2;
 
@@ -16,35 +18,51 @@ public class IAEnemy : MonoBehaviour
     private float rightLimit;
     private float leftLimit;
 
+    private float look = 5f;
+
     private float maxRange = 0.01f;
 
     private BoxCollider2D enemyCollider2D;
+
+    [SerializeField] private Transform player;
 
     // Start is called before the first frame update
     void Start()
     {
         rigidEnemy = GetComponent<Rigidbody2D>();
-        leftLimit = rigidEnemy.transform.position.x - 10;
-        rightLimit = rigidEnemy.transform.position.x + 10;
+
+        leftLimit = rigidEnemy.transform.position.x -8;
+        rightLimit = rigidEnemy.transform.position.x +8;
+
+        look = rigidEnemy.transform.position.x + 4;
         //puntoA = new Vector3(rigidEnemy.transform.position.x - 10, 0, 0);
         //puntoB = new Vector3(rigidEnemy.transform.position.x +10, 0, 0);
     }
 
     private void Update()
     {
-
-        EnemyVision();
+        /*
+        
+        if (transform.position.x == player.position.x + look)
+        {
+            Debug.Log("te sigo");
+        }
+        */
+       RaycastHit2D hit = Physics2D.Raycast(raycastOrigin.position,Vector2.right, look);
+       //if (Physics.Raycast ( transform.position, -transform.right, out hit, 5f))
+      //{ }
+       if (hit.collider.CompareTag("Player"))
+       {
+           Debug.Log("Follow");
+       }
+       else
+       {
+           Debug.Log("Serch");
+       }
         
 
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        //rigidEnemy.velocity = Vector2.right.speed.horizontalwalk;
-
        
-        //if (Vector3.Distance(rigidEnemy.transform.position, puntoA) < maxRange && rightdirection)
+
         if (transform.position.x - leftLimit < maxRange)
         {
             TurnEnemy();
@@ -57,6 +75,17 @@ public class IAEnemy : MonoBehaviour
         }
 
         rigidEnemy.velocity = new Vector2(horizontalWalk * speed, rigidEnemy.velocity.y);
+
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        //rigidEnemy.velocity = Vector2.right.speed.horizontalwalk;
+
+       
+        //if (Vector3.Distance(rigidEnemy.transform.position, puntoA) < maxRange && rightdirection)
+      
     }
 
     void TurnEnemy()
@@ -69,6 +98,7 @@ public class IAEnemy : MonoBehaviour
         horizontalWalk = horizontalWalk *(-1);
     }
 
+   /* 
     private bool EnemyVision()
     {
         float extraHeight = 4f;
@@ -80,4 +110,5 @@ public class IAEnemy : MonoBehaviour
 
         return EnemyVision;
     }
+   */
 }

@@ -1956,9 +1956,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32cc66e9a6bd41f4fa8e621a28cc7248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  raycastOrigin: {fileID: 1691823286}
   speed: 3
   waitingTime: 2
   horizontalWalk: -1
+  player: {fileID: 44359310}
 --- !u!1 &1875429249
 GameObject:
   m_ObjectHideFlags: 0
