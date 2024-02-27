@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 44359311}
   - component: {fileID: 44359312}
   - component: {fileID: 44359313}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: player_game01
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1798,7 +1798,7 @@ GameObject:
   - component: {fileID: 1691823288}
   - component: {fileID: 1691823287}
   - component: {fileID: 1691823289}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: enemi_game01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1957,10 +1957,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   raycastOrigin: {fileID: 1691823286}
-  speed: 3
+  speed: 1.5
   waitingTime: 2
   horizontalWalk: -1
   player: {fileID: 44359310}
+  enemy:
+    serializedVersion: 2
+    m_Bits: 8
+  rayCount: 3
 --- !u!1 &1875429249
 GameObject:
   m_ObjectHideFlags: 0
