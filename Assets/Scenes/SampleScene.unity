@@ -1958,8 +1958,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastOrigin: {fileID: 1691823286}
   speed: 1.5
-  waitingTime: 2
   horizontalWalk: -1
+  speedDetection: 6
   player: {fileID: 44359310}
   enemy:
     serializedVersion: 2
