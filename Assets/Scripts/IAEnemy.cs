@@ -32,6 +32,10 @@ public class IAEnemy : MonoBehaviour
     public int rayCount = 3;
     private Rigidbody2D rigidEnemy;
 
+    public Color orangeColor = new Color(1f, 0.5f, 0.0f); // R: , G: , B: 
+
+    //private float rangeAttack = 1f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -98,16 +102,16 @@ public class IAEnemy : MonoBehaviour
         }
         */
 
-        waitingTime  += Time.deltaTime; 
+        waitingTime += Time.deltaTime;
 
-        
+
         if (waitingTime >= turnTheEnemy)
         {
             TurnEnemy();
             waitingTime = 0f; // Reiniciar el contador de tiempo
         }
 
-           // Actualizar la velocidad del enemigo
+        // Actualizar la velocidad del enemigo
         rigidEnemy.velocity = new Vector2(horizontalWalk * speed, rigidEnemy.velocity.y);
 
         Vector2 enemyPosition = rigidEnemy.position;
@@ -139,9 +143,11 @@ public class IAEnemy : MonoBehaviour
                     // Calcular la velocidad de movimiento del enemigo
                     Vector2 movement = playerDirection * speedDetection * Time.deltaTime;
                     // Rotar al enemigo si no está mirando hacia la dirección del jugador
-                    if (IsFacingPlayer (playerDirection))
+                    if (!IsFacingPlayer(playerDirection))
                     {
-                        transform.rotation = Quaternion.Euler(0f, playerDirection.x < 0 ? 180f : 0f, 0f);
+                        //transform.rotation = Quaternion.Euler(0f, playerDirection.x < 180f ? 0f : 0f, 0f);
+                        TurnEnemy();
+                        waitingTime = 0f;
                     }
                     // Mover al enemigo en la dirección del jugador
                     rigidEnemy.MovePosition(rigidEnemy.position + movement);
@@ -153,15 +159,41 @@ public class IAEnemy : MonoBehaviour
                     Debug.DrawRay(vertex, direction * 3.5f, Color.green);
                 }
             }
-           /* Si el enemigo no está mirando hacia la posición del jugador, girar 180 grados en Y
-            if (!IsFacingPlayer(playerDirection))
+            /* Si el enemigo no está mirando hacia la posición del jugador, girar 180 grados en Y
+             if (!IsFacingPlayer(playerDirection))
+             {
+                 transform.rotation = Quaternion.Euler(0f, playerDirection.x < 0 ? 180f : 0f, 0f);
+             }
+            */
+        }
+
+        Vector2[] attackVertex = new Vector2[]
+        {
+            enemyPosition + new Vector2((-rigidEnemy.velocity.x > 0 ? -1.5f : 0.5f), 1),
+        };
+        foreach (Vector2 vertex in attackVertex)
+        {
+            for (int i = 0; i < rayCount; i++)
             {
-                transform.rotation = Quaternion.Euler(0f, playerDirection.x < 0 ? 180f : 0f, 0f);
+                float angle = i * (360f / 1);
+                Vector2 direction = Quaternion.Euler(0, 0, angle) * Vector2.right;
+                RaycastHit2D hit = Physics2D.Raycast(vertex, direction, 1f, enemy);
+                //Debug.DrawRay(vertex, direction * 3.5f, Color.red);
+
+                //Debug.Log(hit.collider);
+                if (hit.collider != null)
+                {
+                    Debug.Log("Attack");
+                    Debug.DrawRay(vertex, direction * 1f, (orangeColor));
+                }
+                else
+                {
+                    Debug.Log("Hungry...");
+                    Debug.DrawRay(vertex, direction * 1f, Color.blue);
+                }
             }
-           */
         }
     }
-
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -201,7 +233,7 @@ public class IAEnemy : MonoBehaviour
         // Verificar si el jugador está a la izquierda o a la derecha del enemigo en el espacio local
         bool isFacingRight = relativeDirection.x <= 0;
         // Verificar si el enemigo está girado hacia la dirección correcta
-        return (isFacingRight && directionToPlayer.x > 0) || (!isFacingRight && directionToPlayer.x < 0);
+        return (isFacingRight && directionToPlayer.x < 0) || (!isFacingRight && directionToPlayer.x > 0);
     }
     /* 
      private bool EnemyVision()
