@@ -10,7 +10,7 @@ public class PlayerControler : MonoBehaviour
     public float horizontalMov;
     private BoxCollider2D playerCollider2D;
 
-    private float jumpForce = 7f;
+    private float jumpForce = 8f;
     public float jumpMov;
 
     [SerializeField] private LayerMask floorLayerMask;

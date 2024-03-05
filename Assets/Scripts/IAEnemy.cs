@@ -27,10 +27,13 @@ public class IAEnemy : MonoBehaviour
 
     [SerializeField] private Transform player;
 
+
     public LayerMask enemy;
     private float look = 5f;
     public int rayCount = 3;
     private Rigidbody2D rigidEnemy;
+
+    private bool onTheFloor = true;
 
     public Color orangeColor = new Color(1f, 0.5f, 0.0f); // R: , G: , B: 
 
@@ -111,9 +114,7 @@ public class IAEnemy : MonoBehaviour
             waitingTime = 0f; // Reiniciar el contador de tiempo
         }
 
-        // Actualizar la velocidad del enemigo
-        rigidEnemy.velocity = new Vector2(horizontalWalk * speed, rigidEnemy.velocity.y);
-
+        //Raycast
         Vector2 enemyPosition = rigidEnemy.position;
         float halfSize = look / 5;
         Vector2[] horizontalVertex = new Vector2[]
@@ -138,20 +139,6 @@ public class IAEnemy : MonoBehaviour
                     Debug.Log("Perseguir");
                     Debug.DrawRay(vertex, direction * 3.5f, Color.red);
 
-                    // Calcular la dirección hacia el jugador
-                    Vector2 playerDirection = (player.position - transform.position).normalized;
-                    // Calcular la velocidad de movimiento del enemigo
-                    Vector2 movement = playerDirection * speedDetection * Time.deltaTime;
-                    // Rotar al enemigo si no está mirando hacia la dirección del jugador
-                    if (!IsFacingPlayer(playerDirection))
-                    {
-                        //transform.rotation = Quaternion.Euler(0f, playerDirection.x < 180f ? 0f : 0f, 0f);
-                        TurnEnemy();
-                        waitingTime = 0f;
-                    }
-                    // Mover al enemigo en la dirección del jugador
-                    rigidEnemy.MovePosition(rigidEnemy.position + movement);
-
                 }
                 else
                 {
@@ -167,6 +154,7 @@ public class IAEnemy : MonoBehaviour
             */
         }
 
+        //Attack
         Vector2[] attackVertex = new Vector2[]
         {
             enemyPosition + new Vector2((-rigidEnemy.velocity.x > 0 ? -1.5f : 0.5f), 1),
@@ -198,10 +186,35 @@ public class IAEnemy : MonoBehaviour
     void FixedUpdate()
     {
         //rigidEnemy.velocity = Vector2.right.speed.horizontalwalk;
-
-       
         //if (Vector3.Distance(rigidEnemy.transform.position, puntoA) < maxRange && rightdirection)
-      
+
+        //Actualizar la velocidad del enemigo
+        if (onTheFloor == true)
+        {
+            rigidEnemy.velocity = new Vector2(horizontalWalk * speed, rigidEnemy.velocity.y);
+
+            // Calcular la dirección hacia el jugador
+            Vector2 playerDirection = (player.position - transform.position).normalized;
+            // Calcular la velocidad de movimiento del enemigo
+            Vector2 movement = playerDirection * speedDetection * Time.deltaTime;
+            // Rotar al enemigo si no está mirando hacia la dirección del jugador
+            if (!IsFacingPlayer(playerDirection))
+            {
+                //transform.rotation = Quaternion.Euler(0f, playerDirection.x < 180f ? 0f : 0f, 0f);
+                TurnEnemy();
+                waitingTime = 0f;
+            }
+            // Mover al enemigo en la dirección del jugador
+            rigidEnemy.MovePosition(rigidEnemy.position + movement);
+
+        }
+
+        //no volar
+        else
+        {
+            rigidEnemy.velocity = new Vector2(0, transform. position.y);
+        }
+
     }
 
     void TurnEnemy()
@@ -234,6 +247,20 @@ public class IAEnemy : MonoBehaviour
         bool isFacingRight = relativeDirection.x <= 0;
         // Verificar si el enemigo está girado hacia la dirección correcta
         return (isFacingRight && directionToPlayer.x < 0) || (!isFacingRight && directionToPlayer.x > 0);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Verifica si el objeto con el que se ha colisionado tiene el tag "ground"
+        if (collision.gameObject.CompareTag("ground"))
+        {
+            Debug.Log("El objeto está tocando el suelo.");
+            onTheFloor = true;
+        }
+        else 
+        {
+            onTheFloor = false;
+        }
     }
     /* 
      private bool EnemyVision()
