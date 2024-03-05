@@ -187,12 +187,11 @@ public class IAEnemy : MonoBehaviour
     {
         //rigidEnemy.velocity = Vector2.right.speed.horizontalwalk;
         //if (Vector3.Distance(rigidEnemy.transform.position, puntoA) < maxRange && rightdirection)
-
+        /*
         //Actualizar la velocidad del enemigo
         if (onTheFloor == true)
         {
             rigidEnemy.velocity = new Vector2(horizontalWalk * speed, rigidEnemy.velocity.y);
-
             // Calcular la dirección hacia el jugador
             Vector2 playerDirection = (player.position - transform.position).normalized;
             // Calcular la velocidad de movimiento del enemigo
@@ -209,12 +208,12 @@ public class IAEnemy : MonoBehaviour
 
         }
 
-        //no volar
+        no volar
         else
         {
-            rigidEnemy.velocity = new Vector2(0, transform. position.y);
+            rigidEnemy.velocity = new Vector2(horizontalWalk * speed, rigidEnemy.velocity.y);
         }
-
+        */
     }
 
     void TurnEnemy()
@@ -260,6 +259,7 @@ public class IAEnemy : MonoBehaviour
         else 
         {
             onTheFloor = false;
+            Debug.Log("El objeto no está tocando el suelo.");
         }
     }
     /* 
