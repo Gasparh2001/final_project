@@ -188,6 +188,7 @@ public class IAEnemy : MonoBehaviour
         //rigidEnemy.velocity = Vector2.right.speed.horizontalwalk;
         //if (Vector3.Distance(rigidEnemy.transform.position, puntoA) < maxRange && rightdirection)
         /*
+        */
         //Actualizar la velocidad del enemigo
         if (onTheFloor == true)
         {
@@ -208,12 +209,11 @@ public class IAEnemy : MonoBehaviour
 
         }
 
-        no volar
+        //no volar
         else
         {
             rigidEnemy.velocity = new Vector2(horizontalWalk * speed, rigidEnemy.velocity.y);
         }
-        */
     }
 
     void TurnEnemy()
