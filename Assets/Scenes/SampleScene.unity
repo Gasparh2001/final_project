@@ -1040,6 +1040,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4762128101363917271, guid: 63c1fe17427052b4b92ef622df7cb07a, type: 3}
+      propertyPath: enemy.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762128101363917271, guid: 63c1fe17427052b4b92ef622df7cb07a, type: 3}
       propertyPath: horizontalWalk
       value: -1
       objectReference: {fileID: 0}
