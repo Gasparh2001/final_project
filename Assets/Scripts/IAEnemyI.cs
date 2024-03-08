@@ -39,12 +39,12 @@ public class IAEnemyI : MonoBehaviour
         Vector2 enemyPosition = rigidEnemy.position;
         float halfSize = look / 5;
         Vector2[] horizontalVertex = new Vector2[]
-        {
-            enemyPosition + new Vector2((-rigidEnemy.velocity.x > 0 ? -1.5f : 1.5f), 4),
-            enemyPosition + new Vector2((-rigidEnemy.velocity.x > 0 ? -1.5f : 1.5f), 0),
-            enemyPosition + new Vector2((-rigidEnemy.velocity.x > 0 ? -1.5f : 1.5f), 2),
+        { 
+            enemyPosition + new Vector2((rightdirection ? -1.5f : 1.5f), 4),
+            enemyPosition + new Vector2((rightdirection ? -1.5f : 1.5f), 0),
+            enemyPosition + new Vector2((rightdirection ? -1.5f : 1.5f), 2),
         };
-
+        
         foreach (Vector2 vertex in horizontalVertex)
         {
             for (int i = 0; i < rayCount; i++)
@@ -57,19 +57,18 @@ public class IAEnemyI : MonoBehaviour
                 {
                     Debug.Log("Perseguir");
                     Debug.DrawRay(vertex, direction * 3.5f, Color.red);
-                    
-                    // Calcular la dirección hacia el jugador
-                    float playerDirection = (player.position.x - transform.position.x);
-                    // Calcular la velocidad de movimiento del enemigo
-                    float movement = playerDirection * speedDetection * Time.deltaTime;
-                    // Rotar al enemigo si no está mirando hacia la dirección del jugador
-                    if (!IsFacingPlayer(playerDirection))
+
+                    if (( rigidEnemy.transform.position.x - player.transform.position.x ) > 0f && !rightdirection)
                     {
                         TurnEnemy();
                         startMov = 0;
                     }
-                    // Mover al enemigo en la dirección del jugador
-                    rigidEnemy.MovePosition(rigidEnemy.position + movement);
+                    if ((rigidEnemy.transform.position.x - player.transform.position.x) < 0f && rightdirection)
+                    {
+                        TurnEnemy();
+                        startMov = 0;
+                    }
+                    startMov = 0;
                 }
                 else
                 {
@@ -79,6 +78,7 @@ public class IAEnemyI : MonoBehaviour
             }
         }
     }
+
     void FixedUpdate()
     {
         rigidEnemy.velocity = new Vector2(horizontalWalk * speed, rigidEnemy.velocity.y);
@@ -103,7 +103,6 @@ public class IAEnemyI : MonoBehaviour
         }
     }
 
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("ground"))
@@ -125,38 +124,11 @@ public class IAEnemyI : MonoBehaviour
             }
         }
     } 
+
     void TurnEnemy()
     {
         rightdirection = !rightdirection;
         transform.rotation *= Quaternion.Euler(0, 180, 0);
         horizontalWalk = horizontalWalk * (-1);
-    }
-    bool IsFacingPlayer(Vector2 directionToPlayer)
-    {
-        // Obtener la dirección relativa del jugador al enemigo en el espacio local del enemigo
-        Vector2 relativeDirection = transform.InverseTransformDirection(directionToPlayer);
-        // Verificar si el jugador está a la izquierda o a la derecha del enemigo en el espacio local
-        bool isFacingRight = relativeDirection.x <= 0;
-        // Verificar si el enemigo está girado hacia la dirección correcta
-        return (isFacingRight && directionToPlayer.x < 0) || (!isFacingRight && directionToPlayer.x > 0);
-    }
+    }   
 }
-
-    /*
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.gameObject.CompareTag("ground"))
-            {
-                onTheFloor = true;
-
-            }
-        }private void OnCollisionExit2D(Collision2D collision)
-        {
-            if (collision.gameObject.CompareTag("ground"))
-            {
-                onTheFloor =false;
-
-            }
-        }
-       
-        */
