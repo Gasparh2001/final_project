@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class IAEnemyI : MonoBehaviour
 {
@@ -9,7 +11,7 @@ public class IAEnemyI : MonoBehaviour
 
     [SerializeField] private Transform player;
 
-    public LayerMask enemy;
+    public LayerMask playerLayer;
 
     public bool onTheFloor = false;
     private bool rightdirection = true;
@@ -23,8 +25,11 @@ public class IAEnemyI : MonoBehaviour
 
     private float startMov = 0f;
     private float endMov = 4f;
-    private float look = 5f;
+    private float frontLookDistance = 5f;
+    private float backLookDistance = 1f;
 
+    private bool[] hitFrontArray = new bool[3];
+    private bool[] hitBackArray = new bool[3];
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +40,65 @@ public class IAEnemyI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        for (int i = 0; i < hitFrontArray.Length ; i++)
+        {
+            hitFrontArray[i] = Physics2D.Raycast(transform.position + new Vector3 ( 0, i*2, 0), transform.right, frontLookDistance, playerLayer);
+            hitBackArray[i] = Physics2D.Raycast(transform.position + new Vector3(0, i * 2, 0), -transform.right, backLookDistance, playerLayer);
+
+            Debug.DrawRay(transform.position + new Vector3(0, i * 2, 0), transform.right * frontLookDistance, hitFrontArray[i] ? Color.green : Color.red);
+            Debug.DrawRay(transform.position + new Vector3(0, i * 2, 0), -transform.right * backLookDistance, hitBackArray[i] ? Color.green : Color.red);
+
+            if (hitFrontArray[i])
+            {
+                Debug.Log("Veo el jugador delante");
+                startMov = 0;
+
+                break;
+            }
+            if (hitBackArray[i])
+            {
+                Debug.Log("Veo el jugador detras");
+                TurnEnemy();
+                startMov = 0;
+
+                break;
+            }
+        }
+        /*
+        for (int i = 0; i < hitBackArray.Length; i++)
+        {
+            hitBackArray[i] = Physics2D.Raycast(transform.position + new Vector3(0, i * 2, 0), -transform.right, backLookDistance, playerLayer);
+        }
+        foreach (bool backbool in hitBackArray)
+        {
+            if (backbool == true)
+            {
+                Debug.Log("Veo el jugador a mi detras");
+            }
+
+            else
+            {
+                Debug.Log("No veo el jugador a detras");
+            }
+        }
+        foreach (bool frontbool in hitFrontArray)
+        {
+            if (frontbool == true)
+            {
+                Debug.Log("Veo el jugador a delante");
+            }
+
+            else
+            {
+                Debug.Log("No veo el jugador a delante");
+            }
+        }
+        RaycastHit2D hitBack = Physics2D.Raycast(transform.position, -transform.right, backLookDistance, playerLayer);//debuelve un booleano
+
+        if (hitBack.collider != null)
+        {
+            Debug.Log("Perseguiratras");
+        }
         //Raycast
         Vector2 enemyPosition = rigidEnemy.position;
         float halfSize = look / 5;
@@ -44,7 +108,7 @@ public class IAEnemyI : MonoBehaviour
             enemyPosition + new Vector2((rightdirection ? -1.5f : 1.5f), 0),
             enemyPosition + new Vector2((rightdirection ? -1.5f : 1.5f), 2),
         };
-        
+
         foreach (Vector2 vertex in horizontalVertex)
         {
             for (int i = 0; i < rayCount; i++)
@@ -77,6 +141,7 @@ public class IAEnemyI : MonoBehaviour
                 }
             }
         }
+        */
     }
 
     void FixedUpdate()
@@ -88,17 +153,26 @@ public class IAEnemyI : MonoBehaviour
             Debug.Log("No me muevo");
             speed = 0f;
         }
-        if (onTheFloor == true)
+        else
         {
             Debug.Log("Me muevo");
             speed = 3f;
 
-            startMov += Time.deltaTime;
+            startMov += Time.fixedDeltaTime;
 
             if (startMov >= endMov)
             {
                 TurnEnemy();
                 startMov = 0f; // Reiniciar el contador de tiempo
+            }
+        }
+        if ((rigidEnemy.transform.position.x - player.transform.position.x) < 0f && rightdirection)
+        {
+            Debug.Log("Esta a la drc");
+            if ((rigidEnemy.transform.position.x - player.transform.position.x) > -5f)
+            {
+                Debug.Log("Perseguir drc");
+                startMov = 0;
             }
         }
     }

@@ -18,7 +18,7 @@ public class FollowPlayer : MonoBehaviour
         // GameObject transform.position = FollowingThePlayer();
         //transform.position = player.position + new Vector3(0, 0, -10);
         //transform.position = new Vector3(player.position.x,player.position.y, -10);
-        transform.position = new Vector3(player.position.x, 0, -10); 
+        transform.position = new Vector3(player.position.x, -0.5f, -10); 
     }
 
 }
