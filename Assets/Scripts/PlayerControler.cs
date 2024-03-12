@@ -8,6 +8,7 @@ public class PlayerControler : MonoBehaviour
     private Rigidbody2D rigidPlayer;
     public int speed = 5;
     public float horizontalMov;
+    public float verticalMov;
     private BoxCollider2D playerCollider2D;
 
     private float jumpForce = 8f;
@@ -17,7 +18,8 @@ public class PlayerControler : MonoBehaviour
 
 
     private bool positiveDirection = true;
-    private bool onTheFloor = true;
+    public bool onTheFloor = false;
+    public bool onTheLadder = false;
 
     // Start is called before the first frame update
     void Start()
@@ -35,14 +37,14 @@ public class PlayerControler : MonoBehaviour
         rigidPlayer.velocity = new Vector2(horizontalMov * speed, rigidPlayer.velocity.y);
         //accede a la propiedad v, establece velocidades en X y en Y
 
-       /*
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            //rigidPlayer.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            //* rigidPlayer.velocity = new Vector2 (jumpMov * jumpForce);
-            rigidPlayer.velocity += Vector2.up * jumpForce;
-        }
-        */
+        /*
+         if (Input.GetKeyDown(KeyCode.Space))
+         {
+             //rigidPlayer.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+             //* rigidPlayer.velocity = new Vector2 (jumpMov * jumpForce);
+             rigidPlayer.velocity += Vector2.up * jumpForce;
+         }
+         */
     }
 
     // Update is called once per frame
@@ -65,13 +67,31 @@ public class PlayerControler : MonoBehaviour
             rigidPlayer.velocity += Vector2.up * jumpForce;//correcto
             onTheFloor = false;
         }
+
+        if (Input.GetKey(KeyCode.UpArrow) && !onTheLadder)
+        {
+            rigidPlayer.velocity = new Vector2(rigidPlayer.velocity.x, verticalMov * speed );
+        }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D (Collision2D collision)
     {
         if (collision.gameObject.CompareTag("ground"))
         {
             onTheFloor = true;
+        }
+    }
+
+    private void OnTrigerState2D (Collision2D touch)
+    {
+        if (touch.gameObject.CompareTag("ladder"))
+        {
+            Debug.Log("colisiona");
+            onTheLadder = true;
+        }
+        else
+        {
+            onTheLadder = false;
         }
     }
 
@@ -85,7 +105,7 @@ public class PlayerControler : MonoBehaviour
         //marco las pautas para girar al player
     }
 
-   
+    /*
     private bool IsOnTheGround()
     {
         float extraHeight = 0.05f;
@@ -97,6 +117,6 @@ public class PlayerControler : MonoBehaviour
 
         return isOnTheGround;
     }
-   
+    */
 
 }
