@@ -6,11 +6,15 @@ public class PlayerControler : MonoBehaviour
 {
  
     private Rigidbody2D rigidPlayer;
-    public int speed = 5;
-    public float horizontalMov;
-    public float verticalMov;
+   
     private BoxCollider2D playerCollider2D;
 
+    public int speed = 5;
+    public int speedLadder = 3;
+    private int ladderContactCount = 0;
+
+    public float horizontalMov;
+    public float verticalMov;
     private float jumpForce = 8f;
     public float jumpMov;
 
@@ -67,11 +71,13 @@ public class PlayerControler : MonoBehaviour
             rigidPlayer.velocity += Vector2.up * jumpForce;//correcto
             onTheFloor = false;
         }
-
-        if (Input.GetKey(KeyCode.UpArrow) && !onTheLadder)
+        if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) && onTheLadder)
         {
-            rigidPlayer.velocity = new Vector2(rigidPlayer.velocity.x, verticalMov * speed );
+            //verticalMov = Input.GetAxis("vertical");
+            //transform.position = new Vector2 (rigidPlayer.velocity.x, verticalMov * 2);
+            rigidPlayer.velocity = Vector2.up * speedLadder ;
         }
+
     }
 
     private void OnCollisionEnter2D (Collision2D collision)
@@ -81,19 +87,27 @@ public class PlayerControler : MonoBehaviour
             onTheFloor = true;
         }
     }
-
-    private void OnTrigerState2D (Collision2D touch)
+    private void OnTriggerEnter2D(Collider2D touch)
     {
-        if (touch.gameObject.CompareTag("ladder"))
+        if (touch.CompareTag("ladder"))
         {
-            Debug.Log("colisiona");
+            ladderContactCount++;
             onTheLadder = true;
         }
-        else
+    }
+    private void OnTriggerExit2D(Collider2D donttouch)
+    {
+        if (donttouch.CompareTag("ladder"))
         {
-            onTheLadder = false;
+            ladderContactCount--;
+
+            if (ladderContactCount <= 0)
+            {
+                onTheLadder = false; // Establece en false si ya no hay colisiones con objetos "ground"
+            }
         }
     }
+
 
     void FlipPlayer() 
     {
