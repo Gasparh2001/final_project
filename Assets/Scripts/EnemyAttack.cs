@@ -19,48 +19,49 @@ public class EnemyAttack : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        Vector2 mouth = new Vector2 (transform.position.x, transform.position.y + 0.5f);
+    //void Update()
+    //{
+    //    Vector2 mouth = new Vector2 (transform.position.x, transform.position.y + 0.5f);
 
-        if (rightdirection = true)
-        {
-            //creo el raycast a la derecha
+    //    if (rightdirection = true)
+    //    {
+    //        //creo el raycast a la derecha
+    //        Debug.Log("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+    //        RaycastHit2D hit = Physics2D.Raycast (mouth , attackDirection, lengthAttack);
+            
 
-            RaycastHit2D hit = Physics2D.Raycast (mouth , attackDirection, lengthAttack);
+    //        if (hit.collider != null)
+    //        {
+    //            Debug.Log ("Ataco");
+    //            Debug.DrawRay (mouth, attackDirection * lengthAttack, orange);
+    //        }
 
-            if (hit.collider != null)
-            {
-                Debug.Log ("Ataco");
-                Debug.DrawRay (mouth, attackDirection * lengthAttack, (orange));
-            }
+    //        else
+    //        {
+    //            Debug.Log ("Tengo hambre");
+    //            Debug.DrawRay (mouth, attackDirection * lengthAttack, orange);
+    //        }
+    //    }
 
-            if (hit.collider == null)
-            {
-                Debug.Log ("Tengo hambre");
-                Debug.DrawRay (mouth, attackDirection * lengthAttack, Color.blue);
-            }
-        }
+    //    else
+    //    {
+    //        //creo el raycast a la izq
+    //        Debug.Log("lllllllllllllllllllllllllllllllll");
+    //        RaycastHit2D hit = Physics2D.Raycast(mouth, -attackDirection, lengthAttack);
 
-        else
-        {
-            //creo el raycast a la izq
+    //        if (hit.collider != null)
+    //        {
+    //            Debug.Log ("Ataco");
+    //            Debug.DrawRay (mouth, -attackDirection * lengthAttack, (orange));
+    //        }
 
-            RaycastHit2D hit = Physics2D.Raycast(mouth, -attackDirection, lengthAttack);
-
-            if (hit.collider != null)
-            {
-                Debug.Log ("Ataco");
-                Debug.DrawRay (mouth, -attackDirection * lengthAttack, (orange));
-            }
-
-            if (hit.collider == null)
-            {
-                Debug.Log ("Tengo hambre");
-                Debug.DrawRay (mouth, -attackDirection * lengthAttack, Color.blue);
-            }
-        }
+    //        if (hit.collider == null)
+    //        {
+    //            Debug.Log ("Tengo hambre");
+    //            Debug.DrawRay (mouth, -attackDirection * lengthAttack, Color.blue);
+    //        }
+    //    }
         
-    }
+    //}
 
 }

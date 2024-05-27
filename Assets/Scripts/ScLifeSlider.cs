@@ -8,9 +8,10 @@ public class ScLifeSlider : MonoBehaviour
     private Slider slider;
 
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         slider = GetComponent<Slider>();
+        
     }
 
     public void ChangeMaxLife (float maxLife)
