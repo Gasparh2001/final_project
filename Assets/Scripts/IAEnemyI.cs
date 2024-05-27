@@ -9,9 +9,16 @@ public class IAEnemyI : MonoBehaviour
 {
     private Rigidbody2D rigidEnemy;
 
+    [SerializeField] private GameObject headZoombie;
+
     [SerializeField] private Transform player;
 
     public LayerMask playerLayer;
+
+    private Vector2 mouth;
+    private Vector2 attackDirection = Vector2.right;
+
+    private Color orange = new Color(1f, 0.5f, 0.0f);
 
     public bool onTheFloor = false;
     private bool rightdirection = true;
@@ -27,6 +34,7 @@ public class IAEnemyI : MonoBehaviour
     private float endMov = 4f;
     private float frontLookDistance = 5f;
     private float backLookDistance = 1f;
+    private float lengthAttack = 3f;
 
     private bool[] hitFrontArray = new bool[3];
     private bool[] hitBackArray = new bool[3];
@@ -45,7 +53,7 @@ public class IAEnemyI : MonoBehaviour
             hitFrontArray[i] = Physics2D.Raycast(transform.position + new Vector3 ( 0, i*2, 0), transform.right, frontLookDistance, playerLayer);
             hitBackArray[i] = Physics2D.Raycast(transform.position + new Vector3(0, i * 2, 0), -transform.right, backLookDistance, playerLayer);
 
-            Debug.DrawRay(transform.position + new Vector3(0, i * 2, 0), transform.right * frontLookDistance, hitFrontArray[i] ? Color.green : Color.red);
+            Debug.DrawRay(transform.position + new Vector3(0, i * 2, 0), transform.right * frontLookDistance, hitFrontArray[i] ? Color.green : Color.red);//marco
             Debug.DrawRay(transform.position + new Vector3(0, i * 2, 0), -transform.right * backLookDistance, hitBackArray[i] ? Color.green : Color.red);
 
             if (hitFrontArray[i])
@@ -64,6 +72,44 @@ public class IAEnemyI : MonoBehaviour
                 break;
             }
         }
+
+        Vector2 mouth = new Vector2(transform.position.x, transform.position.y + 0.9f);
+
+        if (transform.rotation == Quaternion.Euler(0, -180, 0))
+        {
+            //creo el raycast a la derecha
+
+            RaycastHit2D hit = Physics2D.Raycast(mouth, -attackDirection, lengthAttack);
+            Debug.DrawRay(mouth, -attackDirection * lengthAttack, Color.blue);
+
+            if (hit.collider != null)
+            {
+                Debug.Log("Attack");
+            }
+            if (hit.collider == null)
+            {
+                Debug.Log("Hungry");
+            }
+        }
+
+        if (transform.rotation == Quaternion.Euler(0, 0, 0))
+        {
+            //creo el raycast a la izq
+
+            RaycastHit2D hit = Physics2D.Raycast(mouth, attackDirection, lengthAttack);
+            Debug.DrawRay(mouth, attackDirection * lengthAttack, Color.blue);
+
+            if (hit.collider != null)
+            {
+                Debug.Log("Attack");
+            }
+            if (hit.collider == null)
+            {
+                Debug.Log("Hungry");
+            }
+        }
+
+
         /*
         for (int i = 0; i < hitBackArray.Length; i++)
         {
@@ -166,6 +212,7 @@ public class IAEnemyI : MonoBehaviour
                 startMov = 0f; // Reiniciar el contador de tiempo
             }
         }
+        /*
         if ((rigidEnemy.transform.position.x - player.transform.position.x) < 0f && rightdirection)
         {
             Debug.Log("Esta a la drc");
@@ -174,7 +221,7 @@ public class IAEnemyI : MonoBehaviour
                 Debug.Log("Perseguir drc");
                 startMov = 0;
             }
-        }
+        }*/
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -204,5 +251,17 @@ public class IAEnemyI : MonoBehaviour
         rightdirection = !rightdirection;
         transform.rotation *= Quaternion.Euler(0, 180, 0);
         horizontalWalk = horizontalWalk * (-1);
-    }   
+    }
+
+    private void OnTriggerEnter2D(Collider2D touch)
+    {
+        if (touch.CompareTag("bullet"))
+        {
+            Destroy(gameObject);
+        }
+        /*if (touch.CompareTag("bullet") && touch.gameObject.name == "headzoombie")
+        {
+            Destroy(gameObject);
+        }*/
+    }
 }
