@@ -9,12 +9,6 @@ public class ShotSc : MonoBehaviour
     private float shotMov = 0;
     private float stopMov = 5;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -22,25 +16,20 @@ public class ShotSc : MonoBehaviour
 
         if (transform.position.x == 0)
         {
-            Debug.Log("empieza a contar");
+            Debug.Log("Start Counting");
             shotMov += Time.fixedDeltaTime;
         }
+
         if (shotMov >= stopMov)
         {
-            Debug.Log("para de contar");
+            Debug.Log("Stop Counting");
             Destroy(gameObject);
         }
     }
     private void OnTriggerEnter2D(Collider2D touch)
     {
-        Debug.Log("tocado");
-            Destroy(gameObject);
-      
-        
-        /*if (touch.CompareTag("bullet") && touch.gameObject.name == "headzoombie")
-        {
-            Destroy(gameObject);
-        }*/
+        Debug.Log("Has Collided");
+        Destroy(gameObject);
     }
 
 

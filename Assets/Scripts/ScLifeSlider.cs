@@ -5,34 +5,30 @@ using UnityEngine.UI;
 
 public class ScLifeSlider : MonoBehaviour
 {
-    private Slider slider;
+    private Slider liveSlider;
 
-    // Start is called before the first frame update
     private void Awake()
     {
-        slider = GetComponent<Slider>();
-        
+        liveSlider = GetComponent<Slider>();
+        if (liveSlider == null)
+        {
+            Debug.LogError("Slider component Not Found");
+        }
     }
 
     public void ChangeMaxLife (float maxLife)
     {
-        slider.maxValue = maxLife;
+        liveSlider.maxValue = maxLife;
     }
 
     public void ChangeActLife (float lifeValue)
     {
-        slider.value = lifeValue;
+        liveSlider.value = lifeValue;
     }
 
     public void StartLifeSlider ( float lifeValue)
     {
         ChangeMaxLife(lifeValue);
         ChangeActLife(lifeValue);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

@@ -87,8 +87,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4619825987354145637}
   - component: {fileID: 1785191695315168890}
-  - component: {fileID: 8503741211137741939}
   - component: {fileID: 4986013548749557379}
+  - component: {fileID: 8503741211137741939}
   m_Layer: 6
   m_Name: Enemy_game
   m_TagString: Untagged
@@ -148,28 +148,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.03, y: -0.14}
   m_Size: {x: 1, y: 3.35}
   m_Direction: 0
---- !u!114 &8503741211137741939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5540979870344924946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8cf00bc23a9ddf4bb86dde4f8740055, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  headZoombie: {fileID: 537990693011104912}
-  player: {fileID: 6049159246096160774, guid: 181c6979c53ca4a4d9acc0653b7e81ed, type: 3}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  onTheFloor: 0
-  horizontalWalk: 1
-  speed: 3
-  speedDetection: 10
-  rayCount: 3
 --- !u!50 &4986013548749557379
 Rigidbody2D:
   serializedVersion: 4
@@ -197,6 +175,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &8503741211137741939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5540979870344924946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8cf00bc23a9ddf4bb86dde4f8740055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  onTheFloor: 0
+  horizontalWalk: 1
+  speed: 3
 --- !u!1 &7321885276472884879
 GameObject:
   m_ObjectHideFlags: 0

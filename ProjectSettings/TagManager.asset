@@ -9,6 +9,7 @@ TagManager:
   - enemyHead
   - bullet
   - bulled
+  - box
   layers:
   - Default
   - TransparentFX

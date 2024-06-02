@@ -1,49 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ScLife : MonoBehaviour
 {
-    [SerializeField] private float life;
+    public ScLifeSlider scLifeSliderSc;
 
-    [SerializeField] private float maxLife;
+    private Renderer renderer;
 
-    [SerializeField] private ScLifeSlider lifeSlider;
-
+    public float life;
+    public float maxLife;
+    
     // Start is called before the first frame update
     void Start()
     {
         life = maxLife;
-        lifeSlider.StartLifeSlider(life);
+        renderer = GetComponent<Renderer>();
     }
 
-    public void TakeDamage (float damage)
+    public void TakeDamage (float damage = 5f)
     {
+        
         life -= damage;
-        lifeSlider.ChangeActLife(life);
+
+        if (scLifeSliderSc != null)
+        {
+            scLifeSliderSc.ChangeActLife(life);
+        }
+        else
+        {
+            Debug.LogWarning("ScLifeSlider component not assigned.");
+        }
 
         if (life <= 0)
         {
-            Destroy(gameObject);
+            Debug.Log("You are DEAD.");
+            SceneManager.LoadScene(2);
         }
-    }
-
-    public void TakeHeal (float heal)
-    {
-        if ((life + heal) > maxLife)
-        {
-            life = maxLife;
-        }
-
-        else
-        {
-            life += heal;
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
